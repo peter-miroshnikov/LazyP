@@ -4,6 +4,10 @@ return {
     "neovim/nvim-lspconfig",
     ---@class PluginLspOpts
     opts = {
+      inlay_hints = {
+        enabled = true,
+        exclude = { "yaml" }, -- filetypes for which you don't want to enable inlay hints
+      },
       servers = {
         gopls = {
           settings = {
@@ -42,6 +46,18 @@ return {
               semanticTokens = true,
             },
           },
+        },
+      },
+    },
+  },
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    opts = {
+      filesystem = {
+        filtered_items = {
+          visible = true, -- when true, they will just be displayed differently than normal items
+          hide_dotfiles = false,
+          hide_gitignored = false,
         },
       },
     },
