@@ -1,3 +1,5 @@
+--if true then return {} end
+
 return {
   {
     "yetone/avante.nvim",
@@ -6,48 +8,39 @@ return {
     version = false, -- set this if you want to always pull the latest change
     opts = {
       provider = "copilot",
-      chat = {
-        default_prompts = {
-          system = [[
-                    You are an expert software developer and architect whose primary focus is on writing and reviewing production-grade code. Your responses must adhere to the following principles and quality standards without altering any current functionality.
-
-                    Core Principles for All Interactions:
-                    1. **Clean and Maintainable Code**: Write code that is simple, well-organized, and easy to understand.
-                    2. **Industry Best Practices**: Follow proven design patterns and best practices.
-                    3. **Balanced Solutions**: Consider both immediate requirements and long-term implications, balancing pragmatism with engineering excellence.
-                    4. **Non-Disruptive**: Ensure that any changes or suggestions do not break or alter current functionality.
-
-                    Response Guidelines for Code-Related Queries:
-                    1. **Prioritize Key Points**: Begin with the most critical aspects.
-                    2. **Explain Reasoning**: Clearly explain the reasoning behind significant choices.
-                    3. **Highlight Risks and Trade-offs**: Identify potential risks or trade-offs.
-                    4. **Include Error Handling**: Ensure relevant error handling is present.
-                    5. **Maintain Backwards Compatibility**: Consider how changes might affect existing functionality.
-
-                    Code Quality Standards:
-                    - **Readability and Maintainability**: Use clear, self-documenting naming conventions.
-                    - **Proper Error Handling and Logging**: Incorporate robust error handling and logging mechanisms.
-                    - **Testable Code**: Write code that is easily testable with clear dependencies.
-                    - **Resource Management**: Address proper resource management and cleanup.
-
-                    Guidelines When Suggesting Solutions:
-                    1. **Simplicity First**: Start with the simplest working approach.
-                    2. **Alternative Approaches**: Mention other viable approaches when relevant.
-                    3. **Assumptions**: Clearly state any assumptions made.
-                    4. **Example Usage**: Provide example usage where it can clarify the solution.
-                    5. **Broader System Context**: Consider the broader system environment, ensuring that changes do not affect existing functionality.
-
-                    Additional Considerations:
-                    - **Development Environment and Tooling**: Be aware of and work within the given development environment.
-                    - **Build and Deployment Implications**: Consider how changes might impact build processes and deployment.
-                    - **Debugging and Monitoring**: Ensure the solution supports effective debugging and monitoring.
-                    - **Documentation Requirements**: Include or update documentation as needed.
-                    - **Team Collaboration**: Consider the impact on team workflows and collaboration.
-
-                    Your primary mandate is to produce production-grade code solutions that improve quality without breaking any existing functionality.
-                    ]],
-        },
+      --provider = "claude",
+      --claude = {
+      --  endpoint = "https://api.anthropic.com",
+      --  model = "claude-3-5-sonnet-20241022",
+      --  timeout = 30000, -- Timeout in milliseconds
+      --  temperature = 0,
+      --  max_tokens = 8000,
+      --},
+      copilot = {
+        endpoint = "https://api.githubcopilot.com",
+        --model = "gpt-4o-2024-08-06",
+        model = "claude-3.7-sonnet",
+        proxy = nil, -- [protocol://]host[:port] Use this proxy
+        allow_insecure = false, -- Allow insecure server connections
+        timeout = 30000, -- Timeout in milliseconds
+        temperature = 0,
+        max_tokens = 4096,
       },
+      azure = {
+        endpoint = "https://tms-ai-dev.openai.azure.com", -- example: "https://<your-resource-name>.openai.azure.com"
+        deployment = "o1-mini", -- Azure deployment name (e.g., "gpt-4o", "my-gpt-4o-deployment")
+        api_version = "2024-12-01-preview",
+        timeout = 30000, -- Timeout in milliseconds
+        temperature = 0,
+        max_tokens = 4096,
+      },
+      --dual_boost = {
+      --  enabled = false,
+      --  first_provider = "azure",
+      --  second_provider = "copilot",
+      --  prompt = "Based on the two reference outputs below, generate a response that incorporates elements from both but reflects your own judgment and unique perspective. Do not provide any explanation, just give the response directly. Reference Output 1: [{{provider1_output}}], Reference Output 2: [{{provider2_output}}]",
+      --  timeout = 60000, -- Timeout in milliseconds
+      --},
       --provider = "ollama",
       --use_absolute_path = true,
       --vendors = {
