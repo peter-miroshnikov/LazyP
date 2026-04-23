@@ -1,7 +1,4 @@
 return {
-  { "gpanders/editorconfig.nvim" },
-
-  -- add pyright to lspconfig
   {
     "neovim/nvim-lspconfig",
     ---@class PluginLspOpts
@@ -13,9 +10,6 @@ return {
           spacing = 4,
           source = "if_many",
           prefix = "●",
-          -- this will set set the prefix to a function that returns the diagnostics icon based on the severity
-          -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
-          -- prefix = "icons",
         },
         severity_sort = true,
         signs = {
@@ -26,30 +20,9 @@ return {
       },
       inlay_hints = {
         enabled = true,
-        exclude = { "yaml" }, -- filetypes for which you don't want to enable inlay hints
+        exclude = { "yaml" },
       },
       servers = {
-        omnisharp = {
-          handlers = {
-            ["textDocument/definition"] = function(...)
-              return require("omnisharp_extended").handler(...)
-            end,
-          },
-          keys = {
-            {
-              "gd",
-              LazyVim.has("telescope.nvim") and function()
-                require("omnisharp_extended").telescope_lsp_definitions()
-              end or function()
-                require("omnisharp_extended").lsp_definitions()
-              end,
-              desc = "Goto Definition",
-            },
-          },
-          enable_roslyn_analyzers = true,
-          organize_imports_on_format = true,
-          enable_import_completion = true,
-        },
         gopls = {
           settings = {
             gopls = {
@@ -89,7 +62,6 @@ return {
           },
         },
         yamlls = {
-          -- Have to add this for yamlls to understand that we support line folding
           capabilities = {
             textDocument = {
               foldingRange = {
@@ -98,7 +70,6 @@ return {
               },
             },
           },
-          -- lazy-load schemastore when needed
           settings = {
             redhat = { telemetry = { enabled = false } },
             yaml = {
@@ -108,10 +79,7 @@ return {
               },
               validate = false,
               schemaStore = {
-                -- Must disable built-in schemaStore support to use
-                -- schemas from SchemaStore.nvim plugin
                 enable = false,
-                -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
                 url = "",
               },
             },
