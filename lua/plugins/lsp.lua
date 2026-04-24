@@ -24,6 +24,12 @@ return {
       },
       servers = {
         gopls = {
+          -- Prefer go.work root so gopls sees the full multi-module workspace
+          root_dir = function(fname)
+            local util = require("lspconfig.util")
+            return util.root_pattern("go.work")(fname)
+              or util.root_pattern("go.mod", ".git")(fname)
+          end,
           settings = {
             gopls = {
               gofumpt = true,
