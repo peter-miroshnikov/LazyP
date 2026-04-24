@@ -1,4 +1,30 @@
 return {
+  -- Fix golangci-lint in go.work projects: always lint the package directory,
+  -- not a single file (go env GOMOD returns /dev/null in workspace mode)
+  {
+    "mfussenegger/nvim-lint",
+    opts = function()
+      local lint = require("lint")
+      lint.linters.golangcilint.args = {
+        "run",
+        "--output.json.path=stdout",
+        "--output.text.path=",
+        "--output.tab.path=",
+        "--output.html.path=",
+        "--output.checkstyle.path=",
+        "--output.code-climate.path=",
+        "--output.junit-xml.path=",
+        "--output.teamcity.path=",
+        "--output.sarif.path=",
+        "--issues-exit-code=0",
+        "--show-stats=false",
+        "--path-mode=abs",
+        function()
+          return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":h")
+        end,
+      }
+    end,
+  },
   {
     "neovim/nvim-lspconfig",
     ---@class PluginLspOpts
@@ -24,12 +50,6 @@ return {
       },
       servers = {
         gopls = {
-          -- Prefer go.work root so gopls sees the full multi-module workspace
-          root_dir = function(fname)
-            local util = require("lspconfig.util")
-            return util.root_pattern("go.work")(fname)
-              or util.root_pattern("go.mod", ".git")(fname)
-          end,
           settings = {
             gopls = {
               gofumpt = true,
